@@ -9,6 +9,7 @@
     "modules-left": [
         "power-profiles-daemon",
         "idle_inhibitor",
+        "temperature",
         "custom/music"
     ],
     "modules-center": [
@@ -17,7 +18,6 @@
     "modules-right": [
         "pulseaudio",
         "network",
-        "temperature",
         "backlight",
         "battery",
         "clock",
@@ -147,7 +147,8 @@
             "car": "",
             "default": ["", "", ""]
         },
-        "on-click": "pavucontrol"
+        "on-click": "pavucontrol",
+        "on-click-right": "blueman-manager"
     },
     "custom/music": {
         "format": "{icon} {text}",
