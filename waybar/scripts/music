@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# Check if playerctl is available
+if ! command -v playerctl &> /dev/null; then
+    echo '{"text": "", "class": "stopped"}'
+    exit 0
+fi
+
+# Check if any player is running
+if ! playerctl status &>/dev/null; then
+    echo '{"text": "", "class": "stopped"}'
+    exit 0
+fi
+
+# Get player status
+status=$(playerctl status 2>/dev/null)
+if [ $? -ne 0 ]; then
+    echo '{"text": "", "class": "stopped"}'
+    exit 0
+fi
+
+# Get player name
+player=$(playerctl metadata --format "{{ playerName }}" 2>/dev/null || echo "Unknown")
+
+# Only proceed for specific players
+case $player in
+    "spotify"|"mpv"|"zen"|"firefox"|"chromium"|"brave"|"google-chrome")
+        # Get track info
+        artist=$(playerctl metadata artist 2>/dev/null || echo "Unknown Artist")
+        title=$(playerctl metadata title 2>/dev/null || echo "Unknown Title")
+        
+        # Format display text
+        if [ -n "$title" ] && [ "$title" != "Unknown Title" ]; then
+            # Truncate long strings
+            if [ ${#artist} -gt 20 ]; then
+                artist="${artist:0:17}..."
+            fi
+            if [ ${#title} -gt 30 ]; then
+                title="${title:0:27}..."
+            fi
+            
+            display_text="$artist - $title"
+        else
+            display_text="No media"
+        fi
+        
+        # Output JSON based on status
+        case $status in
+            "Playing")
+                echo "{\"text\": \"$display_text\", \"class\": \"playing\"}"
+                ;;
+            "Paused")
+                echo "{\"text\": \"$display_text\", \"class\": \"paused\"}"
+                ;;
+            *)
+                echo "{\"text\": \"$display_text\", \"class\": \"stopped\"}"
+                ;;
+        esac
+        ;;
+    *)
+        echo '{"text": "", "class": "stopped"}'
+        ;;
+esac

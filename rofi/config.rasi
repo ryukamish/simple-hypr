@@ -1,0 +1,15 @@
+@theme "~/.cache/wal/colors-rofi-dark.rasi"
+
+configuration {
+    modi: "drun,emoji";
+    font: "Adwaita Sans 15";
+    show-icons: true;
+    icons: "Adwaita";
+    animate: true;
+    animation-fade: true;
+}
+
+element-icon {
+    size: 32px;
+    margin: 0% 10px 0% 0%;
+}

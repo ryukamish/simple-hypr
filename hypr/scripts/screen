@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+case $1 in
+    "select")
+        grim -g "$(slurp)" ~/Pictures/screenshot_$(date +%Y%m%d%H%M).png && notify-send "Screenshot Taken" "Selected area screenshot saved to ~/Pictures"
+        ;;
+    "full")
+        grim ~/Pictures/screenshot_$(date +%Y%m%d%H%M).png && notify-send "Screenshot Taken" "Full screen screenshot saved to ~/Pictures"
+        ;;
+    *)
+        echo "[FAIL] grim or slurp not found" || notify-send -u critical "Screenshot Failed" "grim or slurp not found"
+        ;;
+esac

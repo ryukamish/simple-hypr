@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+# Directory where your wallpapers are stored
+WALLPAPER_DIR="$HOME/Pictures/wallpapers"
+
+# Get a random wallpaper
+WALLPAPER=$(find "$WALLPAPER_DIR" -type f -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" | shuf -n 1)
+
+# Check if a wallpaper was found
+if [ -z "$WALLPAPER" ]; then
+    echo "No wallpapers found in $WALLPAPER_DIR."
+    exit 1
+fi
+
+# Set the wallpaper using hyprpaper
+# The empty monitor argument applies it to all monitors without a specific wallpaper set
+hyprctl hyprpaper reload ,"$WALLPAPER"
+
+# Generate pywal colors from the current wallpaper
+wal -i "$WALLPAPER" -n # -n prevents a notification, adjust as desired
+
+# Optional: Refresh other applications (e.g., Waybar, Rofi, Kitty, etc.)
+# These commands depend on what applications you use and how they integrate with pywal.
+# Here are some common examples, uncomment and adjust as needed:
+# pywalfox update # For Firefox
+# killall -SIGUSR2 waybar # For Waybar
+# pkill -SIGUSR1 rofi # For Rofi
+# kitty @ set-colors -a # For Kitty (if using default pywal template)
+
+echo "Set wallpaper to: $WALLPAPER"
+echo "Generated pywal colors."
