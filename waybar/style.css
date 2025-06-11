@@ -83,14 +83,13 @@ button:hover {
 #backlight,
 #network,
 #pulseaudio,
-#wireplumber,
 #custom-music,
 #tray,
 #scratchpad,
 #power-profiles-daemon {
     padding: 0 10px;
-    color: @background;
-    background-color: @foreground;
+    color: @color0;
+    background-color: @color7;
 }
 
 #window,
@@ -115,8 +114,8 @@ button:hover {
 }
 
 #battery {
-    background-color: @foreground;
-    color: shade(@background,0.8);
+    background-color: @background;
+    color: #666666;
     padding: 0 10px;
 }
 
@@ -185,8 +184,8 @@ label:focus {
 }
 
 #backlight {
-    background-color: @foreground;
-    color: @background;
+    color: @color6;
+    background-color: @background;
 }
 
 #network {
@@ -195,28 +194,29 @@ label:focus {
     padding-right: 16px;
 }
 
+#network.connected {
+    color: @color2;
+    background-color: @background;
+}
+
 #network.disconnected {
-    background-color: rgba(255,0,0,0.3);
-    color: shade(@background, 0.75);
+    background-color: @color1;
+    color: @background;
 }
 
 #pulseaudio {
-    background-color: #f1c40f;
-    color: #000000;
+    color: @color6;
+    background-color: shade(@background,0.7); 
 }
 
 #pulseaudio.muted {
-    background-color: #90b1b1;
-    color: #2a5c45;
+	color: #808080;
+	background-color: shade(@background,0.5);
 }
 
-#wireplumber {
-    background-color: #fff0f5;
-    color: #000000;
-}
-
-#wireplumber.muted {
-    background-color: #f53c3c;
+#custom-music.playing {
+    background-color: @color1;
+    color: @background;
 }
 
 #custom-music.stopped {
@@ -224,8 +224,8 @@ label:focus {
 }
 
 #custom-music.paused {
-	background-color: rgba(239, 239, 240, 1);
-}
+    background-color: shade(@color1, 0.5);
+    color: @background;}
 
 #temperature {
     color: shade(@color1, 0.5);
@@ -237,7 +237,7 @@ label:focus {
 }
 
 #tray {
-    background-color: #2980b9;
+    background-color: shade(@color1, 0.5);
 }
 
 #tray > .passive {
@@ -252,6 +252,7 @@ label:focus {
 #idle_inhibitor {
     background-color: #2d3436;
     padding-right: 16px;
+    padding-left: 16px;
 }
 
 #idle_inhibitor.activated {
