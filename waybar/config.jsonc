@@ -9,7 +9,6 @@
     "modules-left": [
         "power-profiles-daemon",
         "idle_inhibitor",
-        "temperature",
         "custom/music"
     ],
     "modules-center": [

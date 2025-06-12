@@ -114,8 +114,8 @@ button:hover {
 }
 
 #battery {
-    background-color: @background;
-    color: #666666;
+    background-color: @color2;
+    color: @background;
     padding: 0 10px;
 }
 
