@@ -3,7 +3,7 @@
 
 * {
     /* `otf-font-awesome` is required to be installed for icons */
-    font-family: FontAwesome,"Adwaita Sans", Roboto, Helvetica, Arial, sans-serif;
+    font-family: "Adwaita Sans", Roboto, Helvetica, Arial, sans-serif;
     font-size: 15px;
 }
 
