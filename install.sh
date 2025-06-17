@@ -1,11 +1,58 @@
 #!/bin/bash
 
-# List of packages to install
-packages=("rofi" "grim" "slurp" "waybar" "wlogout" "swappy" "evince")
+# Check for internet connectivity
+echo "Checking internet connectivity..."
+if ! ping -c 1 google.com &> /dev/null; then
+    echo "❌ No internet connection. Exiting."
+    exit 1
+fi
+echo "✓ Internet connection available"
+
+# Check if git is installed
+if ! command -v git &> /dev/null; then
+    echo "❌ Git is not installed. Installing git..."
+    sudo pacman -S --needed git
+    if [ $? -ne 0 ]; then
+        echo "❌ Failed to install git. Exiting."
+        exit 1
+    fi
+fi
+echo "✓ Git is available"
+
+# Check if packages.txt exists
+if [ ! -f "packages.txt" ]; then
+    echo "❌ packages.txt file not found. Exiting."
+    exit 1
+fi
+echo "✓ packages.txt found"
+
+# Check if yay is installed, if not install it
+if ! command -v yay &> /dev/null; then
+    echo "Installing yay AUR helper..."
+    cd ~/Downloads
+    git clone https://aur.archlinux.org/yay-bin.git
+    cd yay-bin
+    makepkg -si --noconfirm
+    cd ..
+    rm -rf yay-bin
+    cd - > /dev/null
+    
+    if ! command -v yay &> /dev/null; then
+        echo "❌ Failed to install yay. Exiting."
+        exit 1
+    fi
+fi
+echo "✓ yay is available"
+
+# Read packages from packages.txt
+packages=()
+while IFS= read -r line; do
+    [[ -n "$line" ]] && packages+=("$line")
+done < packages.txt
 
 # Function to check if package is installed
 is_installed() {
-    if command -v "$1" &> /dev/null || pacman -Qi "$1" &> /dev/null 2>&1; then
+    if yay -Qi "$1" &> /dev/null; then
         return 0
     else
         return 1
@@ -15,6 +62,11 @@ is_installed() {
 # Check and install packages
 to_install=()
 for package in "${packages[@]}"; do
+    # Skip empty lines
+    if [ -z "$package" ]; then
+        continue
+    fi
+    
     if is_installed "$package"; then
         echo "✓ $package is already installed"
     else
@@ -23,11 +75,11 @@ for package in "${packages[@]}"; do
     fi
 done
 
-# Install missing packages
+# Install missing packages using yay
 if [ ${#to_install[@]} -gt 0 ]; then
     echo ""
     echo "Installing missing packages: ${to_install[*]}"
-    sudo pacman -S --needed "${to_install[@]}"
+    yay -S --needed "${to_install[@]}"
 else
     echo ""
     echo "All packages are already installed!"
