@@ -1,15 +1,15 @@
-/* Include pywal colors */
 @import url("../../.cache/wal/colors-waybar.css");
 
 * {
     /* `otf-font-awesome` is required to be installed for icons */
-    font-family: "JetBrainsMono Nerd Font", Roboto, Helvetica, Arial, sans-serif;
-    font-size: 15px;
+    font-family: FontAwesome,'JetBrainsMono Nerd Font', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 13px;
 }
 
 window#waybar {
     background-color: @background;
-    color: @foreground;
+    color: #ffffff;
+    transition-property: background-color;
     transition-duration: .5s;
 }
 
@@ -17,8 +17,9 @@ window#waybar.hidden {
     opacity: 0.2;
 }
 
-window#waybar.empty {
-    background-color: transparent;
+window#waybar.chromium {
+    background-color: #000000;
+    border: none;
 }
 
 button {
@@ -32,7 +33,46 @@ button {
 /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
 button:hover {
     background: inherit;
-    box-shadow: inset 0 -3px @color1;
+    box-shadow: inset 0 -3px #ffffff;
+}
+
+/* Workspace states for numbers */
+#workspaces button {
+    padding: 0 5px;
+    background-color: transparent;
+    color: #ffffff;
+}
+
+/* Active workspace (focused) */
+#workspaces button.active,
+#workspaces button.focused {
+    background-color: @color4;
+    color: #ffffff;
+    box-shadow: inset 0 -1px #ffffff;
+}
+
+/* Workspace with windows (occupied) */
+#workspaces button.occupied {
+    background-color: @color2;
+    color: shade(@foreground, 0.75);
+}
+
+/* Empty workspace */
+#workspaces button.empty {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Urgent workspace (manual intervention required) */
+#workspaces button.urgent {
+    background-color: #eb4d4b;
+    color: #ffffff;
+    /* animation: urgent-blink 1s steps(2, jump-none) infinite; */
+}
+
+@keyframes urgent-blink {
+    0% { background-color: #eb4d4b; color: #ffffff; }
+    50% { background-color: #ffffff; color: #eb4d4b; }
+    100% { background-color: #eb4d4b; color: #ffffff; }
 }
 
 /* you can set a style on hover for any module like this */
@@ -40,31 +80,19 @@ button:hover {
     background-color: #a37800;
 }
 
-#workspaces {
-    background-color: @background;
-}
-
 #workspaces button {
-    background-color: @background;
-    color: @foreground;
-}
-
-#workspaces button.active {
-    background-color: @color1;
-	color: @background;
-}
-
-#workspaces button.empty {
-    color: alpha(@foreground, 0.4);
+    padding: 0 5px;
+    background-color: transparent;
+    color: #ffffff;
 }
 
 #workspaces button:hover {
-    background: shade(@color5, 0.2);
+    background: rgba(0, 0, 0, 0.2);
 }
 
 #workspaces button.focused {
-    background-color: @color1;
-    /* box-shadow: inset 0 -3px #ffffff; */
+    background-color: #64727D;
+    box-shadow: inset 0 -3px #ffffff;
 }
 
 #workspaces button.urgent {
@@ -76,6 +104,8 @@ button:hover {
     box-shadow: inset 0 -3px #ffffff;
 }
 
+#clock,
+#battery,
 #cpu,
 #memory,
 #disk,
@@ -83,13 +113,15 @@ button:hover {
 #backlight,
 #network,
 #pulseaudio,
-#custom-music,
+#wireplumber,
+#custom-media,
 #tray,
+#mode,
+#idle_inhibitor,
 #scratchpad,
-#power-profiles-daemon {
+#mpd {
     padding: 0 10px;
-    color: @color0;
-    background-color: @color7;
+    color: #ffffff;
 }
 
 #window,
@@ -108,25 +140,22 @@ button:hover {
 }
 
 #clock {
-    background-color: @foreground;
-    color: @background;
-    padding: 0 10px;
+    background-color: @color1;
 }
 
 #battery {
-    background-color: @color2;
-    color: @background;
-    padding: 0 10px;
+    background-color: #ffffff;
+    color: #000000;
 }
 
 #battery.charging {
-    color: rgba(255,255,255,1);
-    background-color: rgba(0, 255, 0, 0.85);   
+    color: #ffffff;
+    background-color: #26A65B;
 }
 
 #battery.plugged {
-    color: shade(@background, 0.8);
-    background-color: rgba(255,255,255,0.10);
+    color: #ffffff;
+    background-color: #1A6A3F; /* Dimmed green for plugged but not charging */
 }
 
 @keyframes blink {
@@ -148,17 +177,17 @@ button:hover {
 }
 
 #power-profiles-daemon {
-    padding-right: 15px;
+    padding: 0 12px 0 6px;
 }
 
 #power-profiles-daemon.performance {
-    background-color: rgba(255,0,0,1);
-    color: @foreground;
+    background-color: #f53c3c;
+    color: #ffffff;
 }
 
 #power-profiles-daemon.balanced {
-    background-color: @foreground;
-    color: @background;
+    background-color: #2980b9;
+    color: #ffffff;
 }
 
 #power-profiles-daemon.power-saver {
@@ -171,51 +200,50 @@ label:focus {
 }
 
 #cpu {
-    background-color: #2ecc71;
+    background-color: @color1;
     color: #000000;
 }
 
 #memory {
-    background-color: #9b59b6;
+    background-color: @color1;
 }
 
 #disk {
-    background-color: #964B00;
+    background-color: @color1;
 }
 
 #backlight {
-    color: @color6;
-    background-color: @background;
+    background-color: @color2;
+    color: @background;
 }
 
 #network {
-    background-color: @color3;
+    background-color: @color1;
     color: @background;
-    padding-right: 16px;
-}
-
-#network.connected {
-    color: @color2;
-    background-color: @background;
 }
 
 #network.disconnected {
-    background-color: @color1;
+    background-color: #f53c3c;
     color: @background;
 }
 
 #pulseaudio {
-    color: @color6;
-    background-color: shade(@background,0.7); 
+    background-color: @color5;
+    color: @background;
 }
 
 #pulseaudio.muted {
-	color: #808080;
-	background-color: shade(@background,0.5);
+    background-color: shade(@background,1.2);
+    color: rgba(255, 0, 0, 1);
 }
 
-#custom-music.playing {
-    background-color: @color1;
+#custom-music {
+    background-color: @foreground;
+    color: @background;
+}
+
+#custom-music.paused {
+    background-color: shade(@foreground, 0.5);
     color: @background;
 }
 
@@ -223,21 +251,17 @@ label:focus {
     background-color: transparent;
 }
 
-#custom-music.paused {
-    background-color: shade(@color1, 0.5);
-    color: @background;}
-
 #temperature {
-    color: shade(@color1, 0.5);
-    background-color: @foreground;
+    background-color: #f0932b;
 }
 
 #temperature.critical {
-    background-color: rgba(255,0,0,1);
+    background-color: #eb4d4b;
 }
 
 #tray {
-    background-color: shade(@color1, 0.5);
+    background-color: shade(@foreground, 0.5);
+    padding-right: 6px;
 }
 
 #tray > .passive {
@@ -250,7 +274,6 @@ label:focus {
 }
 
 #idle_inhibitor {
-    background-color: #2d3436;
     padding: 0 16px 0 10px;
 }
 
@@ -259,8 +282,7 @@ label:focus {
     color: #2d3436;
 }
 
-#custom-power {
-    background-color: @color1; 
-    color: @background;
-    padding: 0 0 0 10px;
-}
+/* Remove left padding from the very first module on the left */
+/* .modules-left > widget:first-child > #power-profiles-daemon {
+    padding-left: 0;
+} */
