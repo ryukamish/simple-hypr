@@ -119,6 +119,7 @@ button:hover {
 #mode,
 #idle_inhibitor,
 #scratchpad,
+#custom-music,
 #mpd {
     padding: 0 10px;
     color: #ffffff;
@@ -240,6 +241,7 @@ label:focus {
 #custom-music {
     background-color: @foreground;
     color: @background;
+    padding-left: 0;
 }
 
 #custom-music.paused {

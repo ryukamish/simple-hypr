@@ -1,63 +1,70 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Check if playerctl is available
+# Music status script for Waybar
+# Fetches currently playing music and displays artist - song name
+
+# Check if playerctl is installed
 if ! command -v playerctl &> /dev/null; then
-    echo '{"text": "", "class": "stopped"}'
-    exit 0
-fi
-
-# Check if any player is running
-if ! playerctl status &>/dev/null; then
-    echo '{"text": "", "class": "stopped"}'
-    exit 0
+    echo '{"text": "playerctl not found", "class": "error"}'
+    exit 1
 fi
 
 # Get player status
-status=$(playerctl status 2>/dev/null)
-if [ $? -ne 0 ]; then
+STATUS=$(playerctl status 2>/dev/null)
+
+# Check if any player is running
+if [ $? -ne 0 ] || [ -z "$STATUS" ]; then
     echo '{"text": "", "class": "stopped"}'
     exit 0
 fi
 
-# Get player name
-player=$(playerctl metadata --format "{{ playerName }}" 2>/dev/null || echo "Unknown")
+# Get metadata
+ARTIST=$(playerctl metadata artist 2>/dev/null)
+TITLE=$(playerctl metadata title 2>/dev/null)
+PLAYER=$(playerctl metadata --format "{{ playerName }}" 2>/dev/null)
 
-# Only proceed for specific players
-case $player in
-    "spotify"|"mpv"|"zen"|"firefox"|"chromium"|"brave"|"google-chrome")
-        # Get track info
-        artist=$(playerctl metadata artist 2>/dev/null || echo "Unknown Artist")
-        title=$(playerctl metadata title 2>/dev/null || echo "Unknown Title")
-        
-        # Format display text
-        if [ -n "$title" ] && [ "$title" != "Unknown Title" ]; then
-            # Truncate long strings
-            if [ ${#artist} -gt 20 ]; then
-                artist="${artist:0:17}..."
-            fi
-            if [ ${#title} -gt 30 ]; then
-                title="${title:0:27}..."
-            fi
-            
-            display_text="$artist - $title"
-        else
-            display_text="No media"
-        fi
-        
-        # Output JSON based on status
-        case $status in
-            "Playing")
-                echo "{\"text\": \"$display_text\", \"class\": \"playing\"}"
-                ;;
-            "Paused")
-                echo "{\"text\": \"$display_text\", \"class\": \"paused\"}"
-                ;;
-            *)
-                echo "{\"text\": \"$display_text\", \"class\": \"stopped\"}"
-                ;;
-        esac
+# Fallback if metadata is missing
+if [ -z "$ARTIST" ]; then
+    ARTIST="Unknown Artist"
+fi
+
+if [ -z "$TITLE" ]; then
+    TITLE="Unknown Title"
+fi
+
+# Truncate long strings for display
+MAX_LENGTH=50
+if [ ${#ARTIST} -gt 20 ]; then
+    ARTIST="${ARTIST:0:17}..."
+fi
+
+if [ ${#TITLE} -gt 25 ]; then
+    TITLE="${TITLE:0:22}..."
+fi
+
+# Format the display text
+DISPLAY_TEXT="$ARTIST - $TITLE"
+
+# Truncate total length if needed
+if [ ${#DISPLAY_TEXT} -gt $MAX_LENGTH ]; then
+    DISPLAY_TEXT="${DISPLAY_TEXT:0:$((MAX_LENGTH-3))}..."
+fi
+
+# Set icon and class based on status
+case $STATUS in
+    "Playing")
+        ICON="▶"
+        CLASS="playing"
+        ;;
+    "Paused")
+        ICON="⏸"
+        CLASS="paused"
         ;;
     *)
-        echo '{"text": "", "class": "stopped"}'
+        ICON="⏹"
+        CLASS="stopped"
         ;;
 esac
+
+# Output JSON format for Waybar
+echo "{\"text\": \"$ICON $DISPLAY_TEXT\", \"tooltip\": \"$PLAYER: $ARTIST - $TITLE\", \"class\": \"$CLASS\"}"
