@@ -2,7 +2,7 @@
 
 configuration {
     modi: "drun,emoji";
-    font: "Adwaita Sans 15";
+    font: "JetBrainsMono Nerd Font 15";
     show-icons: true;
     icons: "Adwaita";
     animate: true;

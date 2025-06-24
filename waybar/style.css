@@ -3,7 +3,7 @@
 
 * {
     /* `otf-font-awesome` is required to be installed for icons */
-    font-family: "Adwaita Sans", Roboto, Helvetica, Arial, sans-serif;
+    font-family: "JetBrainsMono Nerd Font", Roboto, Helvetica, Arial, sans-serif;
     font-size: 15px;
 }
 
@@ -251,8 +251,7 @@ label:focus {
 
 #idle_inhibitor {
     background-color: #2d3436;
-    padding-right: 16px;
-    padding-left: 16px;
+    padding: 0 16px 0 10px;
 }
 
 #idle_inhibitor.activated {

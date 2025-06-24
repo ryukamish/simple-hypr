@@ -1,13 +1,74 @@
 #!/usr/bin/env bash
 
+# Check if required programs are installed
+check_dependencies() {
+    local missing_deps=()
+    
+    if ! command -v grim &> /dev/null; then
+        missing_deps+=("grim")
+    fi
+    
+    if ! command -v slurp &> /dev/null; then
+        missing_deps+=("slurp")
+    fi
+    
+    if ! command -v notify-send &> /dev/null; then
+        missing_deps+=("notify-send")
+    fi
+    
+    if [ ${#missing_deps[@]} -ne 0 ]; then
+        local deps_str=$(IFS=', '; echo "${missing_deps[*]}")
+        echo "[FAIL] Missing required programs: $deps_str"
+        # Try to send notification if notify-send is available
+        if command -v notify-send &> /dev/null; then
+            notify-send -u critical "Screenshot Failed" "Missing required programs: $deps_str"
+        fi
+        exit 1
+    fi
+}
+
+# Check and create screenshot directory
+check_directory() {
+    local screenshot_dir="$HOME/Pictures/screenshots"
+    
+    if [ ! -d "$screenshot_dir" ]; then
+        if ! mkdir -p "$screenshot_dir" 2>/dev/null; then
+            echo "[FAIL] Cannot create screenshot directory: $screenshot_dir"
+            notify-send -u critical "Screenshot Failed" "Cannot create directory: $screenshot_dir"
+            exit 1
+        fi
+    fi
+}
+
+# Check dependencies and directory
+check_dependencies
+check_directory
+
 case $1 in
     "select")
-        grim -g "$(slurp)" ~/Pictures/screenshot_$(date +%Y%m%d%H%M).png && notify-send "Screenshot Taken" "Selected area screenshot saved to ~/Pictures"
+        if grim -g "$(slurp)" ~/Pictures/screenshots/screenshot_$(date +%Y%m%d%H%M).png; then
+            notify-send "Screenshot Taken" "Selected area screenshot saved to ~/Pictures/screenshots"
+        else
+            echo "[FAIL] Failed to take selected area screenshot"
+            notify-send -u critical "Screenshot Failed" "Failed to capture selected area"
+            exit 1
+        fi
         ;;
     "full")
-        grim ~/Pictures/screenshot_$(date +%Y%m%d%H%M).png && notify-send "Screenshot Taken" "Full screen screenshot saved to ~/Pictures"
+        if grim ~/Pictures/screenshots/screenshot_$(date +%Y%m%d%H%M).png; then
+            notify-send "Screenshot Taken" "Full screen screenshot saved to ~/Pictures/screenshots"
+        else
+            echo "[FAIL] Failed to take full screen screenshot"
+            notify-send -u critical "Screenshot Failed" "Failed to capture full screen"
+            exit 1
+        fi
         ;;
     *)
-        echo "[FAIL] grim or slurp not found" || notify-send -u critical "Screenshot Failed" "grim or slurp not found"
+        echo "Usage: $0 {select|full}"
+        echo "  select - Take screenshot of selected area"
+        echo "  full   - Take full screen screenshot"
+        notify-send -u normal "Screenshot Script" "Usage: select or full"
+        exit 1
         ;;
 esac
+
