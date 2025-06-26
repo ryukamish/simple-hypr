@@ -15,6 +15,7 @@ exfatprogs
 fzf
 ffmpeg
 fastfetch
+ffmpegthumbnailer
 git
 gvfs
 hwdata
