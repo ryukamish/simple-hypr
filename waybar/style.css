@@ -156,7 +156,7 @@ button:hover {
 
 #battery.plugged {
     color: #ffffff;
-    background-color: #1A6A3F; /* Dimmed green for plugged but not charging */
+    background-color: shade(#1A6A3F, 0.5); /* Dimmed green for plugged but not charging */
 }
 
 @keyframes blink {
@@ -215,12 +215,12 @@ label:focus {
 
 #backlight {
     background-color: @color2;
-    color: @background;
+    color: rgba(255, 255, 255, 1);
 }
 
 #network {
     background-color: @color1;
-    color: @background;
+    color: rgba(255, 255, 255, 1);
 }
 
 #network.disconnected {
@@ -230,7 +230,7 @@ label:focus {
 
 #pulseaudio {
     background-color: @color5;
-    color: @background;
+    color: rgba(255, 255, 255, 1);
 }
 
 #pulseaudio.muted {
@@ -239,14 +239,14 @@ label:focus {
 }
 
 #custom-music {
-    background-color: @foreground;
-    color: @background;
+    background-color: @color1;
+    color: rgba(255, 255, 255, 1);
     padding-left: 0;
 }
 
 #custom-music.paused {
-    background-color: shade(@foreground, 0.5);
-    color: @background;
+    background-color: shade(@color1, 0.5);
+    color: shade(rgba(255,255,255,1),0.5);
 }
 
 #custom-music.stopped {
