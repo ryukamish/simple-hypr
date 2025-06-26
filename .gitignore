@@ -1,0 +1,12 @@
+# Ignore everything
+/*
+
+# But don't ignore these directories
+!/hypr/
+!/waybar/
+!/wlogout/
+!/rofi/
+!/mpv/
+!/kitty/
+!/dunst/
+!.gitignore
