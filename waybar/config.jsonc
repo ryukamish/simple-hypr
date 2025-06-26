@@ -7,14 +7,14 @@
     "spacing": 4, // Gaps between modules (4px)
     // Choose the order of the modules
     "modules-left": [
-        "power-profiles-daemon",
-        "idle_inhibitor",
+        "hyprland/workspaces",
         "custom/music"
     ],
     "modules-center": [
-        "hyprland/workspaces"
     ],
     "modules-right": [
+        "power-profiles-daemon",
+        "idle_inhibitor",
         "pulseaudio",
         "network",
         "backlight",
