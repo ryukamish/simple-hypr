@@ -22,9 +22,10 @@ else
         echo $! > "$PIDFILE"
         /usr/bin/notify-send "Screen Recording" "Recording selected area started"
     else
+	/usr/bin/notify-send -t 500 "Screen Recording" "Full screen recording started"
+	sleep 1
         # Record full screen (when slurp is cancelled or fails)
         /usr/bin/wl-screenrec --audio -f "$RECORDINGS_DIR/recording-$(date +%Y%m%d-%H%M%S).mp4" &
         echo $! > "$PIDFILE"
-        /usr/bin/notify-send "Screen Recording" "Full screen recording started"
     fi
 fi
