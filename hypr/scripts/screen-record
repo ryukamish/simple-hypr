@@ -1,0 +1,24 @@
+#!/bin/bash
+
+PIDFILE="/tmp/wl-screenrec.pid"
+
+if [ -f "$PIDFILE" ]; then
+    # Stop recording
+    kill $(cat "$PIDFILE") 2>/dev/null
+    rm "$PIDFILE"
+    notify-send "Screen Recording" "Recording stopped"
+else
+    # Start recording
+    GEOMETRY=$(slurp 2>/dev/null)
+    if [ $? -eq 0 ]; then
+        if [ -n "$GEOMETRY" ]; then
+            # Record selected area
+            wl-screenrec -g "$GEOMETRY" -f ~/Videos/recording-$(date +%Y%m%d-%H%M%S).mp4 &
+        else
+            # Record full screen
+            wl-screenrec -f ~/Videos/recording-$(date +%Y%m%d-%H%M%S).mp4 &
+        fi
+        echo $! > "$PIDFILE"
+        notify-send "Screen Recording" "Recording started"
+    fi
+fi

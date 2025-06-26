@@ -94,6 +94,7 @@ wget
 wireless_tools
 wireplumber
 wl-clipboard
+wl-screenrec
 wlogout
 wtype
 snappy
