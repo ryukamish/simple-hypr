@@ -1,6 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 PIDFILE="/tmp/wl-screenrec.pid"
+RECORDINGS_DIR="$HOME/Videos/recordings"
+
+# Check if recordings directory exists, if not create it
+if [ ! -d "$RECORDINGS_DIR" ]; then
+    mkdir -p "$RECORDINGS_DIR"
+fi
 
 if [ -f "$PIDFILE" ]; then
     # Stop recording
@@ -10,15 +16,15 @@ if [ -f "$PIDFILE" ]; then
 else
     # Start recording
     GEOMETRY=$(/usr/bin/slurp 2>/dev/null)
-    if [ $? -eq 0 ]; then
-        if [ -n "$GEOMETRY" ]; then
-            # Record selected area
-            /usr/bin/wl-screenrec -g "$GEOMETRY" -f "$HOME/Videos/recording-$(date +%Y%m%d-%H%M%S).mp4" &
-        else
-            # Record full screen
-            /usr/bin/wl-screenrec -f "$HOME/Videos/recording-$(date +%Y%m%d-%H%M%S).mp4" &
-        fi
+    if [ $? -eq 0 ] && [ -n "$GEOMETRY" ]; then
+        # Record selected area
+        /usr/bin/wl-screenrec -g "$GEOMETRY" -f "$RECORDINGS_DIR/recording-$(date +%Y%m%d-%H%M%S).mp4" &
         echo $! > "$PIDFILE"
-        /usr/bin/notify-send "Screen Recording" "Recording started"
+        /usr/bin/notify-send "Screen Recording" "Recording selected area started"
+    else
+        # Record full screen (when slurp is cancelled or fails)
+        /usr/bin/wl-screenrec -f "$RECORDINGS_DIR/recording-$(date +%Y%m%d-%H%M%S).mp4" &
+        echo $! > "$PIDFILE"
+        /usr/bin/notify-send "Screen Recording" "Full screen recording started"
     fi
 fi
