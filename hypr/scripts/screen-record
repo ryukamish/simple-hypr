@@ -18,12 +18,12 @@ else
     GEOMETRY=$(/usr/bin/slurp 2>/dev/null)
     if [ $? -eq 0 ] && [ -n "$GEOMETRY" ]; then
         # Record selected area
-        /usr/bin/wl-screenrec -g "$GEOMETRY" -f "$RECORDINGS_DIR/recording-$(date +%Y%m%d-%H%M%S).mp4" &
+        /usr/bin/wl-screenrec --audio -g "$GEOMETRY" -f "$RECORDINGS_DIR/recording-$(date +%Y%m%d-%H%M%S).mp4" &
         echo $! > "$PIDFILE"
         /usr/bin/notify-send "Screen Recording" "Recording selected area started"
     else
         # Record full screen (when slurp is cancelled or fails)
-        /usr/bin/wl-screenrec -f "$RECORDINGS_DIR/recording-$(date +%Y%m%d-%H%M%S).mp4" &
+        /usr/bin/wl-screenrec --audio -f "$RECORDINGS_DIR/recording-$(date +%Y%m%d-%H%M%S).mp4" &
         echo $! > "$PIDFILE"
         /usr/bin/notify-send "Screen Recording" "Full screen recording started"
     fi
