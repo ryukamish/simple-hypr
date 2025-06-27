@@ -23,6 +23,22 @@ ARTIST=$(playerctl metadata artist 2>/dev/null)
 TITLE=$(playerctl metadata title 2>/dev/null)
 PLAYER=$(playerctl metadata --format "{{ playerName }}" 2>/dev/null)
 
+# Filter for specific players
+if [[ "$PLAYER" != "spotify" && "$PLAYER" != "zen-browser" && "$PLAYER" != "thorium-browser" && "$PLAYER" != "gapless" ]]; then
+    echo '{"text": "", "class": "stopped"}'
+    exit 0
+fi
+
+# Handle YouTube Music in browser (playerctl may identify it as 'zen-browser' or 'thorium-browser')
+if [[ "$PLAYER" == "zen-browser" || "$PLAYER" == "thorium-browser" ]] && [[ "$(echo "$TITLE" | grep -i 'YouTube Music')" ]] ; then
+    # If it's YouTube Music, we can proceed as normal
+    :
+elif [[ "$PLAYER" == "zen-browser" || "$PLAYER" == "thorium-browser" ]] && ! [[ "$(echo "$TITLE" | grep -i 'YouTube Music')"]]; then
+    # If it's another browser tab, ignore it
+    echo '{"text": "", "class": "stopped"}'
+    exit 0
+fi
+
 # Fallback if metadata is missing
 if [ -z "$ARTIST" ]; then
     ARTIST="Unknown Artist"
