@@ -1,7 +1,24 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 PIDFILE="/tmp/wl-screenrec.pid"
 RECORDINGS_DIR="$HOME/Videos/recordings"
+
+# Function to get the default monitor source
+get_monitor_source() {
+    # Get default sink name
+    DEFAULT_SINK=$(pactl info | grep "Default Sink:" | cut -d' ' -f3)
+    
+    # Try to find the monitor source for the default sink
+    MONITOR_SOURCE="${DEFAULT_SINK}.monitor"
+    
+    # Check if this monitor source exists
+    if pactl list sources short | grep -q "$MONITOR_SOURCE"; then
+        echo "$MONITOR_SOURCE"
+    else
+        # Fallback: get the first available monitor source
+        pactl list sources short | grep "\.monitor" | head -n1 | cut -f2
+    fi
+}
 
 # Check if recordings directory exists, if not create it
 if [ ! -d "$RECORDINGS_DIR" ]; then
@@ -14,18 +31,21 @@ if [ -f "$PIDFILE" ]; then
     rm "$PIDFILE"
     /usr/bin/notify-send "Screen Recording" "Recording stopped"
 else
+    # Get the monitor source
+    AUDIO_SOURCE=$(get_monitor_source)
+    
     # Start recording
     GEOMETRY=$(/usr/bin/slurp 2>/dev/null)
     if [ $? -eq 0 ] && [ -n "$GEOMETRY" ]; then
-        # Record selected area
-        /usr/bin/wl-screenrec --audio -g "$GEOMETRY" -f "$RECORDINGS_DIR/recording-$(date +%Y%m%d-%H%M%S).mp4" &
+        # Record selected area with system audio only
+        /usr/bin/wl-screenrec --audio --audio-device "$AUDIO_SOURCE" -g "$GEOMETRY" -f "$RECORDINGS_DIR/recording-$(date +%Y%m%d-%H%M%S).mp4" &
         echo $! > "$PIDFILE"
         /usr/bin/notify-send "Screen Recording" "Recording selected area started"
     else
-	/usr/bin/notify-send -t 500 "Screen Recording" "Full screen recording started"
-	sleep 1
-        # Record full screen (when slurp is cancelled or fails)
-        /usr/bin/wl-screenrec --audio -f "$RECORDINGS_DIR/recording-$(date +%Y%m%d-%H%M%S).mp4" &
+        # Record full screen with system audio only
+        /usr/bin/notify-send -t 1500 "Screen Recording" "Starting in 2 seconds..."
+        sleep 2
+        /usr/bin/wl-screenrec --audio --audio-device "$AUDIO_SOURCE" -f "$RECORDINGS_DIR/recording-$(date +%Y%m%d-%H%M%S).mp4" &
         echo $! > "$PIDFILE"
     fi
 fi
