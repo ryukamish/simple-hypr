@@ -119,7 +119,7 @@ button:hover {
 #mode,
 #idle_inhibitor,
 #scratchpad,
-#custom-music,
+#custom-media,
 #mpd {
     padding: 0 10px;
     color: #ffffff;
@@ -238,18 +238,18 @@ label:focus {
     color: rgba(255, 0, 0, 1);
 }
 
-#custom-music {
+#custom-media {
     background-color: @color1;
     color: rgba(255, 255, 255, 1);
-    padding-left: 0;
+    padding: 0 10px;
 }
 
-#custom-music.paused {
+#custom-media.paused {
     background-color: shade(@color1, 0.5);
     color: shade(rgba(255,255,255,1),0.5);
 }
 
-#custom-music.stopped {
+#custom-media.stopped {
     background-color: transparent;
 }
 
