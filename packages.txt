@@ -5,6 +5,7 @@ bluez
 brightnessctl
 btop
 btrfs-progs
+cava
 dkms
 dosfstools
 dunst
@@ -32,6 +33,7 @@ hyprland
 hyprlock
 hyprpaper
 hyprsunset
+hyprpolkitagent
 intel-media-driver
 intel-ucode
 kitty
@@ -47,12 +49,14 @@ mcontrolcenter-bin
 mpv
 msi-ec-git
 mtools
+mpd
 nautilus
 ncurses
 nwg-look
 network-manager-applet
 networkmanager
 noto-fonts-cjk
+noto-fonts-emoji
 ntfs-3g
 nwg-look
 obsidian-bin
@@ -72,8 +76,10 @@ qt5-wayland
 qt6-multimedia-ffmpeg
 qt6-virtualkeyboard
 qt6-wayland
+rmpc
 rofi
 rofi-emoji
+rofi-calc
 sddm
 slurp
 smartmontools
@@ -83,6 +89,7 @@ telegram-desktop-bin
 thorium-browser-bin
 ticktick
 ttf-jetbrains-mono-nerd
+ttf-roboto
 unzip
 uwsm
 neovim
@@ -92,6 +99,7 @@ vulkan-nouveau
 vulkan-radeon
 waybar
 wget
+wildmidi
 wireless_tools
 wireplumber
 wl-clipboard
@@ -111,6 +119,7 @@ xorg-server
 xorg-xhost
 xorg-xinit
 youtube-music-bin
+qbittorrent
 ticktick
 telegram-desktop-bin
 yt-dlp
