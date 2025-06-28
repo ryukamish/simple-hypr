@@ -87,7 +87,7 @@ fi
 
 # Adding the bash directory files to ~/.bashrc
 cat << EOF >> ~/.bashrc
-for file in "$HOME"/.config/bashrc.d/*; do
+for file in "$HOME"/.config/bash/*; do
     [[ -f $file ]] && source $file
 done
 EOF
