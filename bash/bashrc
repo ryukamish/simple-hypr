@@ -14,6 +14,10 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
 export HISTFILE="$HOME/.local/share/history"
 
+# Aliases
+alias s="yay -Ss"
+alias i="yay -S"
+
 # Bash settings
 shopt -s cdspell
 shopt -s checkwinsize
