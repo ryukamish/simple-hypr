@@ -1,0 +1,54 @@
+# XDG Base Directory Specification
+export XDG_DOWNLOADS_DIR="$HOME/Downloads"
+export XDG_DOCUMENTS_DIR="$HOME/Documents"
+export XDG_MUSIC_DIR="$HOME/Music"
+export XDG_PICTURES_DIR="$HOME/Pictures"
+export XDG_VIDEOS_DIR="$HOME/Videos"
+
+# Path
+export PATH="$HOME/.local/bin:$PATH"
+
+# XDG Directories
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
+export HISTFILE="$HOME/.local/share/history"
+
+# Bash settings
+shopt -s cdspell
+shopt -s checkwinsize
+shopt -s histappend
+shopt -s histreedit
+shopt -s cmdhist
+shopt -s globstar
+shopt -s checkwinsize
+shopt -s extglob progcomp
+
+complete -A shopt shopt
+complete -a unalias
+complete -c command type which
+complete -b builtin
+
+
+# History
+HISTCONTROL=ignoreboth
+HISTSIZE=10000
+HISTFILESIZE=10000
+
+shopt -s histappend
+PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+
+# Colors
+if [[ $(tput colors) -ge 256 ]] 2>/dev/null; then
+    export TERM=xterm-256color
+else
+    export TERM=xterm-color
+fi
+
+# Function to get Git branch name
+parse_git_branch() {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ 🔑(\1)/'
+}
+
+# Custom PS1 prompt with emojis
+PS1="${CYAN}💻️──(${YELLOW}\u${CYAN}👤${GREEN}\h${CYAN})─[${BLUE}\w${CYAN}]${PURPLE}\$(parse_git_branch)\n${CYAN}┗━${RED}➜ ${RESET}"

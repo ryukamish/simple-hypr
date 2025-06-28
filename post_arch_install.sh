@@ -82,5 +82,22 @@ if [ ${#to_install[@]} -gt 0 ]; then
     yay -S --needed "${to_install[@]}"
 else
     echo ""
-    echo "All packages are already installed!"
+    echo "✅ All packages are already installed!"
 fi
+
+# Adding the bash directory files to ~/.bashrc
+cat << EOF >> ~/.bashrc
+for file in "$HOME"/.config/bashrc.d/*; do
+    [[ -f $file ]] && source $file
+done
+EOF
+
+# Post install
+
+# Create directories
+mkdir -p ~/.local/share/mpd/mpd.db
+mkdir -p ~/.local/share/mpd/mpd.log
+
+# Systemctl services
+systemctl enable bluetooth.service
+systemctl enable --user mpd.service
