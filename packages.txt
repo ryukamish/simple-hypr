@@ -31,7 +31,6 @@ gst-plugins-base
 hypridle
 hyprland
 hyprlock
-hyprpaper
 hyprsunset
 hyprpolkitagent
 intel-media-driver

@@ -14,7 +14,7 @@ fi
 
 # Set the wallpaper using hyprpaper
 # The empty monitor argument applies it to all monitors without a specific wallpaper set
-hyprctl hyprpaper reload ,"$WALLPAPER"
+swww img "$WALLPAPER"
 
 # Generate pywal colors from the current wallpaper
 wal -i "$WALLPAPER" -n # -n prevents a notification, adjust as desired
