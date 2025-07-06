@@ -12,9 +12,10 @@ if [ -z "$WALLPAPER" ]; then
     exit 1
 fi
 
+SWWW_OPTS="--transition-type wave --transition-step 100 --transition-fps 60 --transition-duration 0.8"
 # Set the wallpaper using hyprpaper
 # The empty monitor argument applies it to all monitors without a specific wallpaper set
-swww img "$WALLPAPER"
+swww img "$WALLPAPER" $SWWW_OPTS
 
 # Generate pywal colors from the current wallpaper
 wal -i "$WALLPAPER" -n # -n prevents a notification, adjust as desired
