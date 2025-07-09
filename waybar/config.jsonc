@@ -66,7 +66,7 @@
         "spacing": 10
     },
     "clock": {
-        // "timezone": "America/New_York",
+        "timezone": "Asia/Kolkata",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format-alt": "{:%Y-%m-%d}"
     },
@@ -168,7 +168,7 @@
     "custom/media": {
         "format": "{icon} {text}",
         "return-type": "json",
-        "max-length": 100,
+        "max-length": 40,
         "format-icons": {
             "spotify": "",
             "default": ""
