@@ -94,10 +94,5 @@ EOF
 
 # Post install
 
-# Create directories
-mkdir -p ~/.local/share/mpd/mpd.db
-mkdir -p ~/.local/share/mpd/mpd.log
-
 # Systemctl services
 systemctl enable bluetooth.service
-systemctl enable --user mpd.service
