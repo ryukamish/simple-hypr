@@ -1,9 +1,9 @@
 @import url("../../.cache/wal/colors-waybar.css");
 
 * {
-    /* `otf-font-awesome` is required to be installed for icons */
-    font-family: FontAwesome,'JetBrainsMono Nerd Font', Roboto, Helvetica, Arial, sans-serif;
+    font-family: "SF Pro Display", 'JetBrainsMono Nerd Font Propo';
     font-size: 13px;
+    font-weight: bold;
 }
 
 window#waybar {
@@ -15,11 +15,6 @@ window#waybar {
 
 window#waybar.hidden {
     opacity: 0.2;
-}
-
-window#waybar.chromium {
-    background-color: #000000;
-    border: none;
 }
 
 button {
@@ -106,21 +101,14 @@ button:hover {
 
 #clock,
 #battery,
-#cpu,
-#memory,
-#disk,
-#temperature,
 #backlight,
 #network,
 #pulseaudio,
-#wireplumber,
 #custom-media,
 #tray,
-#mode,
 #idle_inhibitor,
-#scratchpad,
-#custom-media,
-#mpd {
+#power-profiles-daemon,
+#custom-media {
     padding: 0 10px;
     color: #ffffff;
 }
@@ -128,16 +116,6 @@ button:hover {
 #window,
 #workspaces {
     margin: 0 4px;
-}
-
-/* If workspaces is the leftmost module, omit left margin */
-.modules-left > widget:first-child > #workspaces {
-    margin-left: 0;
-}
-
-/* If workspaces is the rightmost module, omit right margin */
-.modules-right > widget:last-child > #workspaces {
-    margin-right: 0;
 }
 
 #clock {
@@ -175,10 +153,6 @@ button:hover {
     animation-timing-function: steps(12);
     animation-iteration-count: infinite;
     animation-direction: alternate;
-}
-
-#power-profiles-daemon {
-    padding: 0 12px 0 6px;
 }
 
 #power-profiles-daemon.performance {
@@ -275,16 +249,7 @@ label:focus {
     background-color: #eb4d4b;
 }
 
-#idle_inhibitor {
-    padding: 0 16px 0 10px;
-}
-
 #idle_inhibitor.activated {
     background-color: #ecf0f1;
     color: #2d3436;
 }
-
-/* Remove left padding from the very first module on the left */
-/* .modules-left > widget:first-child > #power-profiles-daemon {
-    padding-left: 0;
-} */
