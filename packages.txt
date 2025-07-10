@@ -15,7 +15,6 @@ curl
 exfatprogs
 fzf
 ffmpeg
-fastfetch
 ffmpegthumbnailer
 git
 gvfs
@@ -59,6 +58,7 @@ ntfs-3g
 nwg-look
 obsidian-bin
 otf-font-awesome
+otf-apple-fonts
 pavucontrol
 pipewire
 pipewire-alsa
