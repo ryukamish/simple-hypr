@@ -108,6 +108,7 @@ button:hover {
 #tray,
 #idle_inhibitor,
 #power-profiles-daemon,
+#custom-power,
 #custom-media {
     padding: 0 10px;
     color: #ffffff;

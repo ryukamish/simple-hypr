@@ -14,7 +14,8 @@
     "backlight",
     "battery",
     "clock",
-    "tray"
+    "tray",
+    "custom/power"
   ],
   
   "hyprland/workspaces": {
@@ -62,7 +63,7 @@
   },
 
   "backlight": {
-    "format": "{percent}% {icon}",
+    "format": "{icon} {percent}%",
     "format-icons": ["", "", "", "", "", "", "", "", ""]
   },
 
@@ -72,11 +73,11 @@
       "warning": 30,
       "critical": 15
     },
-    "format": "{capacity}% {icon}",
-    "format-full": "{capacity}% {icon}",
-    "format-charging": "{capacity}% ",
-    "format-plugged": "{capacity}% ",
-    "format-alt": "{time} {icon}",
+    "format": "{icon} {capacity}%",
+    "format-full": "{icon} {capacity}%",
+    "format-charging": " {capacity}%",
+    "format-plugged": " {capacity}%",
+    "format-alt": "{icon} {time}",
     "format-icons": ["", "", "", "", ""]
   },
 
@@ -95,9 +96,9 @@
   "network": {
     "interface": "wlo1",
     "format": "{ifname}",
-    "format-wifi": "{icon}  {essid}",
-    "format-ethernet": "󰈀  {ipaddr}/{cidr}",
-    "format-disconnected": "󰤭  Disconnected",
+    "format-wifi": "{icon} {essid}",
+    "format-ethernet": "󰈀 {ipaddr}/{cidr}",
+    "format-disconnected": "󰤭 Disconnected",
     "max-length": 50,
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
     "tooltip-format": "Connected to {essid}"
