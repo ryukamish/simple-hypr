@@ -147,7 +147,7 @@
     "max-length": 40,
     "format-icons": {
       "spotify": "",
-      "default": ""
+      "default": "󰎇"
     },
     "escape": true,
     "on-click": "playerctl play-pause",
