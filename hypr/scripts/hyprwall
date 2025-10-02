@@ -8,8 +8,8 @@ WALLPAPER=$(find "$WALLPAPER_DIR" -type f -name "*.png" -o -name "*.jpg" -o -nam
 
 # Check if a wallpaper was found
 if [ -z "$WALLPAPER" ]; then
-    echo "No wallpapers found in $WALLPAPER_DIR."
-    exit 1
+  echo "No wallpapers found in $WALLPAPER_DIR."
+  exit 1
 fi
 
 SWWW_OPTS="--transition-type wave --transition-step 100 --transition-fps 60 --transition-duration 0.8"
@@ -28,5 +28,3 @@ wal -i "$WALLPAPER" -n # -n prevents a notification, adjust as desired
 # pkill -SIGUSR1 rofi # For Rofi
 # kitty @ set-colors -a # For Kitty (if using default pywal template)
 
-echo "Set wallpaper to: $WALLPAPER"
-echo "Generated pywal colors."
