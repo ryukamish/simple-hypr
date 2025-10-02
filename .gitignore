@@ -15,4 +15,5 @@
 !/chromium-flags.conf
 !/user-dirs.dirs
 !/uwsm/
+!/readme
 !.gitignore
