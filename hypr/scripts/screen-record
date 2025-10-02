@@ -1,51 +1,56 @@
 #!/bin/bash
 
-PIDFILE="/tmp/wl-screenrec.pid"
-RECORDINGS_DIR="$HOME/Videos/recordings"
+[[ -f ~/.config/user-dirs.dirs ]] && source ~/.config/user-dirs.dirs
+OUTPUT_DIR="${SCREENRECORD_DIR:-${XDG_VIDEOS_DIR:-$HOME/Videos}}"
 
-# Function to get the default monitor source
-get_monitor_source() {
-    # Get default sink name
-    DEFAULT_SINK=$(pactl info | grep "Default Sink:" | cut -d' ' -f3)
-    
-    # Try to find the monitor source for the default sink
-    MONITOR_SOURCE="${DEFAULT_SINK}.monitor"
-    
-    # Check if this monitor source exists
-    if pactl list sources short | grep -q "$MONITOR_SOURCE"; then
-        echo "$MONITOR_SOURCE"
-    else
-        # Fallback: get the first available monitor source
-        pactl list sources short | grep "\.monitor" | head -n1 | cut -f2
-    fi
+if [[ ! -d "$OUTPUT_DIR" ]]; then
+  notify-send "Screen recording directory does not exist: $OUTPUT_DIR" -u critical -t 3000
+  exit 1
+fi
+
+# Selects region or output
+SCOPE="$1"
+
+# Selects audio inclusion or not
+AUDIO=$([[ $2 == "audio" ]] && echo "--audio")
+
+start_screenrecording() {
+  local filename="$OUTPUT_DIR/screenrecording-$(date +'%Y-%m-%d_%H-%M-%S').mp4"
+
+  if lspci | grep -qi 'nvidia'; then
+    wf-recorder $AUDIO -f "$filename" -c libx264 -p crf=23 -p preset=medium -p movflags=+faststart "$@" &
+  else
+    wl-screenrec $AUDIO -f "$filename" --ffmpeg-encoder-options="-c:v libx264 -crf 23 -preset medium -movflags +faststart" "$@" &
+  fi
+
+  toggle_screenrecording_indicator
 }
 
-# Check if recordings directory exists, if not create it
-if [ ! -d "$RECORDINGS_DIR" ]; then
-    mkdir -p "$RECORDINGS_DIR"
+stop_screenrecording() {
+  pkill -x wl-screenrec
+  pkill -x wf-recorder
+
+  notify-send "Screen recording saved to $OUTPUT_DIR" -t 2000
+
+  sleep 0.2 # ensures the process is actually dead before we check
+  toggle_screenrecording_indicator
+}
+
+toggle_screenrecording_indicator() {
+  pkill -RTMIN+8 waybar
+}
+
+screenrecording_active() {
+  pgrep -x wl-screenrec >/dev/null || pgrep -x wf-recorder >/dev/null
+}
+
+if screenrecording_active; then
+  stop_screenrecording
+elif [[ "$SCOPE" == "output" ]]; then
+  output=$(slurp -o) || exit 1
+  start_screenrecording -g "$output"
+else
+  region=$(slurp) || exit 1
+  start_screenrecording -g "$region"
 fi
 
-if [ -f "$PIDFILE" ]; then
-    # Stop recording
-    /usr/bin/kill $(cat "$PIDFILE") 2>/dev/null
-    rm "$PIDFILE"
-    /usr/bin/notify-send "Screen Recording" "Recording stopped"
-else
-    # Get the monitor source
-    AUDIO_SOURCE=$(get_monitor_source)
-    
-    # Start recording
-    GEOMETRY=$(/usr/bin/slurp 2>/dev/null)
-    if [ $? -eq 0 ] && [ -n "$GEOMETRY" ]; then
-        # Record selected area with system audio only
-        /usr/bin/wl-screenrec --audio --audio-device "$AUDIO_SOURCE" -g "$GEOMETRY" -f "$RECORDINGS_DIR/recording-$(date +%Y%m%d-%H%M%S).mp4" &
-        echo $! > "$PIDFILE"
-        /usr/bin/notify-send "Screen Recording" "Recording selected area started"
-    else
-        # Record full screen with system audio only
-        /usr/bin/notify-send -t 1500 "Screen Recording" "Starting in 2 seconds..."
-        sleep 2
-        /usr/bin/wl-screenrec --audio --audio-device "$AUDIO_SOURCE" -f "$RECORDINGS_DIR/recording-$(date +%Y%m%d-%H%M%S).mp4" &
-        echo $! > "$PIDFILE"
-    fi
-fi

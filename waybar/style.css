@@ -1,9 +1,8 @@
 @import url("../../.cache/wal/colors-waybar.css");
 
 * {
-    font-family: "SF Pro Display", 'JetBrainsMono Nerd Font Propo';
-    font-size: 13px;
-    font-weight: bold;
+    font-family: 'CaskaydiaMono Nerd Font Propo';
+    font-size: 12px;
 }
 
 window#waybar {

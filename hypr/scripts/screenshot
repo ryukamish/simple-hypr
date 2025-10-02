@@ -1,74 +1,17 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-# Check if required programs are installed
-check_dependencies() {
-    local missing_deps=()
-    
-    if ! command -v grim &> /dev/null; then
-        missing_deps+=("grim")
-    fi
-    
-    if ! command -v slurp &> /dev/null; then
-        missing_deps+=("slurp")
-    fi
-    
-    if ! command -v notify-send &> /dev/null; then
-        missing_deps+=("notify-send")
-    fi
-    
-    if [ ${#missing_deps[@]} -ne 0 ]; then
-        local deps_str=$(IFS=', '; echo "${missing_deps[*]}")
-        echo "[FAIL] Missing required programs: $deps_str"
-        # Try to send notification if notify-send is available
-        if command -v notify-send &> /dev/null; then
-            notify-send -u critical "Screenshot Failed" "Missing required programs: $deps_str"
-        fi
-        exit 1
-    fi
-}
+[[ -f ~/.config/user-dirs.dirs ]] && source ~/.config/user-dirs.dirs
+OUTPUT_DIR="${SCREENSHOT_DIR:-${XDG_PICTURES_DIR:-$HOME/Pictures}}"
 
-# Check and create screenshot directory
-check_directory() {
-    local screenshot_dir="$HOME/Pictures/screenshots"
-    
-    if [ ! -d "$screenshot_dir" ]; then
-        if ! mkdir -p "$screenshot_dir" 2>/dev/null; then
-            echo "[FAIL] Cannot create screenshot directory: $screenshot_dir"
-            notify-send -u critical "Screenshot Failed" "Cannot create directory: $screenshot_dir"
-            exit 1
-        fi
-    fi
-}
+if [[ ! -d "$OUTPUT_DIR" ]]; then
+  notify-send "Screenshot directory does not exist: $OUTPUT_DIR" -u critical -t 3000
+  exit 1
+fi
 
-# Check dependencies and directory
-check_dependencies
-check_directory
-
-case $1 in
-    "select")
-        if grim -g "$(slurp)" ~/Pictures/screenshots/screenshot_$(date +%Y%m%d%H%M).png; then
-            notify-send "Screenshot Taken" "Selected area screenshot saved to ~/Pictures/screenshots"
-        else
-            echo "[FAIL] Failed to take selected area screenshot"
-            notify-send -u critical "Screenshot Failed" "Failed to capture selected area"
-            exit 1
-        fi
-        ;;
-    "full")
-        if grim ~/Pictures/screenshots/screenshot_$(date +%Y%m%d%H%M).png; then
-            notify-send "Screenshot Taken" "Full screen screenshot saved to ~/Pictures/screenshots"
-        else
-            echo "[FAIL] Failed to take full screen screenshot"
-            notify-send -u critical "Screenshot Failed" "Failed to capture full screen"
-            exit 1
-        fi
-        ;;
-    *)
-        echo "Usage: $0 {select|full}"
-        echo "  select - Take screenshot of selected area"
-        echo "  full   - Take full screen screenshot"
-        notify-send -u normal "Screenshot Script" "Usage: select or full"
-        exit 1
-        ;;
-esac
-
+pkill slurp || hyprshot -m ${1:-region} --raw |
+  satty --filename - \
+    --output-filename "$OUTPUT_DIR/screenshot-$(date +'%Y-%m-%d_%H-%M-%S').png" \
+    --early-exit \
+    --actions-on-enter save-to-clipboard \
+    --save-after-copy \
+    --copy-command 'wl-copy'

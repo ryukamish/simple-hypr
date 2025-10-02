@@ -2,45 +2,34 @@
 {
   "layer": "top",
   "position": "top",
-  "height": 24,
-  "spacing": 4,
-  "modules-left": ["hyprland/workspaces", "custom/media"],
-  "modules-center": [],
+  "height": 26,
+  "spacing": 0,
+  "modules-left": ["hyprland/workspaces"],
+  "modules-center": ["clock"],
   "modules-right": [
-    "power-profiles-daemon",
     "idle_inhibitor",
-    "pulseaudio",
+    "bluetooth",
     "network",
+    "pulseaudio",
     "backlight",
     "battery",
-    "clock",
-    "tray",
-    "custom/power"
+    "tray"
   ],
   
   "hyprland/workspaces": {
     "format": "{icon}",
     "on-click": "activate",
     "format-icons": {
-      "1": "一",
-      "2": "二",
-      "3": "三",
-      "4": "四",
-      "5": "五"
+      "default": "",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "active": "󱓻"
     },
     "persistent-workspaces": {
       "*": 5
-    },
-    "sort-by-number": true
-  },
-
-  "keyboard-state": {
-    "numlock": true,
-    "capslock": true,
-    "format": "{name} {icon}",
-    "format-icons": {
-      "locked": "",
-      "unlocked": ""
     }
   },
 
@@ -53,13 +42,14 @@
   },
 
   "tray": {
-    "spacing": 10
+    "icon-size": 12,
+    "spacing": 12
   },
 
   "clock": {
-    "format": "󰥔 {:%I:%M %p}",
+    "format": "{:%I:%M %p}",
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-    "format-alt": "󰥔 {:%a, %d. %b}"
+    "format-alt": "{:%a, %d. %b}"
   },
 
   "backlight": {
@@ -80,19 +70,13 @@
     "format-alt": "{icon} {time}",
     "format-icons": ["", "", "", "", ""]
   },
-
-  "power-profiles-daemon": {
-    "format": "{icon}",
-    "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
-    "tooltip": true,
-    "format-icons": {
-      "default": "",
-      "performance": "",
-      "balanced": "",
-      "power-saver": ""
-    }
+  "bluetooth": {
+    "format": "",
+    "format-disabled": "󰂲",
+    "format-connected": "",
+    "tooltip-format": "Devices connected: {num_connections}",
+    "on-click": "blueberry"
   },
-
   "network": {
     "interface": "wlo1",
     "format": "{ifname}",
@@ -122,39 +106,6 @@
     },
     "on-click": "pavucontrol",
     "on-click-right": "blueman-manager"
-  },
-
-  "custom/music": {
-    "format": "{icon} {text}",
-    "format-icons": {
-      "Playing": "󰎈",
-      "Paused": "󰏤",
-      "Stopped": "󰓛",
-      "No media": "󰓛"
-    },
-    "max-length": 40,
-    "interval": 2,
-    "exec": "~/.config/waybar/scripts/music",
-    "on-click": "playerctl play-pause",
-    "on-click-right": "playerctl next",
-    "on-click-middle": "playerctl previous",
-    "return-type": "json"
-  },
-
-  "custom/media": {
-    "format": "{icon} {text}",
-    "return-type": "json",
-    "max-length": 40,
-    "format-icons": {
-      "spotify": "",
-      "default": "󰎇"
-    },
-    "escape": true,
-    "on-click": "playerctl play-pause",
-    "on-click-right": "playerctl next",
-    "on-click-middle": "playerctl previous",
-    "exec": "$HOME/.config/waybar/scripts/mediaplayer.py 2> /dev/null"
-    // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
   },
 
   "custom/power": {
