@@ -8,6 +8,7 @@ ffmpeg
 ffmpegthumbnailer
 git
 gnome-themes-extra
+gnome-music
 grim
 gst-plugin-pipewire
 gst-plugins-bad
@@ -51,6 +52,7 @@ rofi-calc
 slurp
 satty
 sof-firmware
+spotify
 swappy
 swayosd
 ttf-cascadia-mono-nerd
