@@ -5,15 +5,15 @@
   "height": 26,
   "spacing": 0,
   "modules-left": ["hyprland/workspaces"],
-  "modules-center": ["clock"],
+  "modules-center": ["clock", "custom/screenrecording-indicator"],
   "modules-right": [
+    "tray",
     "idle_inhibitor",
     "bluetooth",
     "network",
     "pulseaudio",
     "backlight",
-    "battery",
-    "tray"
+    "battery"
   ],
   
   "hyprland/workspaces": {
@@ -59,7 +59,6 @@
 
   "battery": {
     "states": {
-      // "good": 95,
       "warning": 30,
       "critical": 15
     },
@@ -70,6 +69,7 @@
     "format-alt": "{icon} {time}",
     "format-icons": ["", "", "", "", ""]
   },
+
   "bluetooth": {
     "format": "",
     "format-disabled": "󰂲",
@@ -77,10 +77,11 @@
     "tooltip-format": "Devices connected: {num_connections}",
     "on-click": "blueberry"
   },
+
   "network": {
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
-    "format": "{icon} {essid}",
-    "format-wifi": "{icon}",
+    "format": "{icon}",
+    "format-wifi": "{icon} {essid}",
     "format-ethernet": "󰀂",
     "format-disconnected": "󰤮",
     "tooltip-format-wifi": "{essid} ({frequency} GHz)\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
@@ -88,8 +89,9 @@
     "tooltip-format-disconnected": "Disconnected",
     "interval": 3,
     "spacing": 1,
-    "on-click": "omarchy-launch-wifi"
+    "on-click": "$HOME/.config/waybar/scripts/hypr-terminal-wifi"
   },
+
   "pulseaudio": {
     "format": "{icon} {volume}%",
     "format-bluetooth": " {volume}% {format_source}",
@@ -106,20 +108,14 @@
       "car": "",
       "default": ["", "", ""]
     },
-    "on-click": "pavucontrol",
-    "on-click-right": "blueman-manager"
+    "on-click": "pavucontrol"
   },
 
-  "custom/power": {
-    "format": "⏻ ",
-    "tooltip": false,
-    "menu": "on-click",
-    "menu-file": "$HOME/.config/waybar/scripts/power_menu.xml", // Menu file in resources folder
-    "menu-actions": {
-      "shutdown": "shutdown",
-      "reboot": "reboot",
-      "suspend": "systemctl suspend",
-      "hibernate": "systemctl hibernate"
-    }
-  }
+    "custom/screenrecording-indicator": {
+    "on-click": "$HOME/.config/hypr/scripts/screen-record",
+    "exec": "$HOME/.config/waybar/scripts/screen-recording.sh",
+    "signal": 8,
+    "return-type": "json"
+  },
+
 }

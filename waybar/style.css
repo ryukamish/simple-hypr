@@ -1,59 +1,31 @@
 @import url("../../.cache/wal/colors-waybar.css");
 
 * {
-    font-family: 'CaskaydiaMono Nerd Font Propo';
-    font-size: 12px;
+  background-color: @background;
+  color: @foreground;
+
+  border: none;
+  border-radius: 0;
+  min-height: 0;
+  font-family: 'CaskaydiaMono Nerd Font Propo';
+  font-size: 12px;
 }
 
-window#waybar {
-    background-color: @background;
-    color: #ffffff;
-    transition-property: background-color;
-    transition-duration: .5s;
-}
-
-window#waybar.hidden {
-    opacity: 0.2;
-}
-
-button {
-    /* Use box-shadow instead of border so the text isn't offset */
-    box-shadow: inset 0 -3px transparent;
-    /* Avoid rounded borders under each button name */
-    border: none;
-    border-radius: 0;
-}
-
-/* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
-button:hover {
-    background: inherit;
-    box-shadow: inset 0 -3px #ffffff;
+.modules-left{
+  margin-left: 8px;
 }
 
 /* Workspace states for numbers */
 #workspaces button {
-    padding: 0 5px;
-    background-color: transparent;
-    color: #ffffff;
-}
-
-/* Active workspace (focused) */
-#workspaces button.active,
-#workspaces button.focused {
-    background-color: @color4;
-    color: #ffffff;
-    box-shadow: inset 0 -1px #ffffff;
-}
-
-/* Workspace with windows (occupied) */
-#workspaces button.occupied {
-    background-color: @color2;
-    color: shade(@foreground, 0.75);
+  all: initial;
+  padding: 0 6px;
+  margin: 0 1.5px;
+  min-width: 9px;
 }
 
 /* Empty workspace */
 #workspaces button.empty {
-    color: rgba(255, 255, 255, 0.5);
+  opacity: 0.5;
 }
 
 /* Urgent workspace (manual intervention required) */
@@ -69,84 +41,37 @@ button:hover {
     100% { background-color: #eb4d4b; color: #ffffff; }
 }
 
-/* you can set a style on hover for any module like this */
-#pulseaudio:hover {
-    background-color: #a37800;
-}
-
-#workspaces button {
-    padding: 0 5px;
-    background-color: transparent;
-    color: #ffffff;
-}
-
-#workspaces button:hover {
-    background: rgba(0, 0, 0, 0.2);
-}
-
-#workspaces button.focused {
-    background-color: #64727D;
-    box-shadow: inset 0 -3px #ffffff;
-}
-
-#workspaces button.urgent {
-    background-color: #eb4d4b;
-}
-
-#mode {
-    background-color: #64727D;
-    box-shadow: inset 0 -3px #ffffff;
-}
-
 #clock,
 #battery,
 #backlight,
+#bluetooth,
+#custom-screenrecording-indicator,
 #network,
 #pulseaudio,
-#custom-media,
 #tray,
-#idle_inhibitor,
-#power-profiles-daemon,
-#custom-power,
-#custom-media {
-    padding: 0 10px;
-    color: #ffffff;
-}
-
-#window,
-#workspaces {
-    margin: 0 4px;
+#idle_inhibitor {
+  min-width: 12px;
+  margin: 0 7.5px;
 }
 
 #clock {
-    background-color: @color1;
+  margin-right: 8.75px;
 }
 
-#battery {
-    background-color: #ffffff;
-    color: #000000;
+.hidden {
+  opacity: 0;
 }
 
 #battery.charging {
     color: #ffffff;
-    background-color: #26A65B;
 }
 
 #battery.plugged {
     color: #ffffff;
-    background-color: shade(#1A6A3F, 0.5); /* Dimmed green for plugged but not charging */
-}
-
-@keyframes blink {
-    to {
-        background-color: #ffffff;
-        color: #000000;
-    }
 }
 
 /* Using steps() instead of linear as a timing function to limit cpu usage */
 #battery.critical:not(.charging) {
-    background-color: #f53c3c;
     color: #ffffff;
     animation-name: blink;
     animation-duration: 0.5s;
@@ -155,101 +80,40 @@ button:hover {
     animation-direction: alternate;
 }
 
-#power-profiles-daemon.performance {
-    background-color: #f53c3c;
-    color: #ffffff;
-}
-
-#power-profiles-daemon.balanced {
-    background-color: #2980b9;
-    color: #ffffff;
-}
-
-#power-profiles-daemon.power-saver {
-    background-color: #2ecc71;
-    color: #000000;
-}
-
-label:focus {
-    background-color: #000000;
-}
-
-#cpu {
-    background-color: @color1;
-    color: #000000;
-}
-
-#memory {
-    background-color: @color1;
-}
-
-#disk {
-    background-color: @color1;
-}
-
 #backlight {
-    background-color: @color2;
     color: rgba(255, 255, 255, 1);
 }
 
+tooltip {
+  padding: 2px;
+}
+
 #network {
-    background-color: @color1;
     color: rgba(255, 255, 255, 1);
 }
 
 #network.disconnected {
-    background-color: #f53c3c;
-    color: @background;
+    color: #F4320B;
 }
 
 #pulseaudio {
-    background-color: @color5;
     color: rgba(255, 255, 255, 1);
 }
 
 #pulseaudio.muted {
-    background-color: shade(@background,1.2);
-    color: rgba(255, 0, 0, 1);
-}
-
-#custom-media {
-    background-color: @color1;
-    color: rgba(255, 255, 255, 1);
-    padding: 0 10px;
-}
-
-#custom-media.paused {
-    background-color: shade(@color1, 0.5);
-    color: shade(rgba(255,255,255,1),0.5);
-}
-
-#custom-media.stopped {
-    background-color: transparent;
-}
-
-#temperature {
-    background-color: #f0932b;
-}
-
-#temperature.critical {
-    background-color: #eb4d4b;
-}
-
-#tray {
-    background-color: shade(@foreground, 0.5);
-    padding-right: 6px;
-}
-
-#tray > .passive {
-    -gtk-icon-effect: dim;
-}
-
-#tray > .needs-attention {
-    -gtk-icon-effect: highlight;
-    background-color: #eb4d4b;
+    color: #F4320B;
 }
 
 #idle_inhibitor.activated {
-    background-color: #ecf0f1;
-    color: #2d3436;
+    color: #7ADF7A;
+}
+
+#custom-screenrecording-indicator {
+  min-width: 12px;
+  margin-left: 8.75px;
+  font-size: 10px;
+}
+
+#custom-screenrecording-indicator.active {
+  color: #a55555;
 }
