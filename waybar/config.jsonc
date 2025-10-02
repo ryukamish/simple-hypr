@@ -12,7 +12,6 @@
     "bluetooth",
     "network",
     "pulseaudio",
-    "backlight",
     "battery"
   ],
   
@@ -81,7 +80,7 @@
   "network": {
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
     "format": "{icon}",
-    "format-wifi": "{icon} {essid}",
+    "format-wifi": "{icon}",
     "format-ethernet": "󰀂",
     "format-disconnected": "󰤮",
     "tooltip-format-wifi": "{essid} ({frequency} GHz)\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
@@ -93,7 +92,7 @@
   },
 
   "pulseaudio": {
-    "format": "{icon} {volume}%",
+    "format": "{icon}",
     "format-bluetooth": " {volume}% {format_source}",
     "format-bluetooth-muted": "   {format_source}",
     "format-muted": "  {format_source}",

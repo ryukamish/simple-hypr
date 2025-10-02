@@ -51,6 +51,7 @@ slurp
 satty
 sof-firmware
 swappy
+swayosd
 ttf-cascadia-mono-nerd
 unzip
 uwsm
@@ -63,6 +64,7 @@ wget
 wireplumber
 wl-clipboard
 wf-recorder
+wtype
 wlogout
 swww
 xdg-desktop-portal-hyprland
