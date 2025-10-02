@@ -78,16 +78,18 @@
     "on-click": "blueberry"
   },
   "network": {
-    "interface": "wlo1",
-    "format": "{ifname}",
-    "format-wifi": "{icon} {essid}",
-    "format-ethernet": "󰈀 {ipaddr}/{cidr}",
-    "format-disconnected": "󰤭 Disconnected",
-    "max-length": 50,
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
-    "tooltip-format": "Connected to {essid}"
+    "format": "{icon} {essid}",
+    "format-wifi": "{icon}",
+    "format-ethernet": "󰀂",
+    "format-disconnected": "󰤮",
+    "tooltip-format-wifi": "{essid} ({frequency} GHz)\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+    "tooltip-format-ethernet": "⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+    "tooltip-format-disconnected": "Disconnected",
+    "interval": 3,
+    "spacing": 1,
+    "on-click": "omarchy-launch-wifi"
   },
-
   "pulseaudio": {
     "format": "{icon} {volume}%",
     "format-bluetooth": " {volume}% {format_source}",

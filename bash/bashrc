@@ -1,10 +1,3 @@
-# XDG Base Directory Specification
-export XDG_DOWNLOADS_DIR="$HOME/Downloads"
-export XDG_DOCUMENTS_DIR="$HOME/Documents"
-export XDG_MUSIC_DIR="$HOME/Music"
-export XDG_PICTURES_DIR="$HOME/Pictures"
-export XDG_VIDEOS_DIR="$HOME/Videos"
-
 # Path
 export PATH="$HOME/.local/bin:$PATH"
 
@@ -33,7 +26,6 @@ complete -a unalias
 complete -c command type which
 complete -b builtin
 
-
 # History
 HISTCONTROL=ignoreboth
 HISTSIZE=10000
@@ -44,9 +36,9 @@ PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 # Colors
 if [[ $(tput colors) -ge 256 ]] 2>/dev/null; then
-    export TERM=xterm-256color
+  export TERM=xterm-256color
 else
-    export TERM=xterm-color
+  export TERM=xterm-color
 fi
 
 # ANSI color codes
@@ -61,7 +53,7 @@ RESET="\[\033[0m\]"
 
 # Function to get Git branch name
 parse_git_branch() {
-    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ 🔑(\1)/'
+  git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ 🔑(\1)/'
 }
 
 # Custom PS1 prompt with emojis
