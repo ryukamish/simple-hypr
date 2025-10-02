@@ -14,4 +14,5 @@
 !/gtk-4.0/
 !/chromium-flags.conf
 !/user-dirs.dirs
+!/uwsm/
 !.gitignore
