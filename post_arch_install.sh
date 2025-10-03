@@ -192,6 +192,7 @@ WantedBy=graphical.target
 EOF
 fi
 
+# Systemd units
 if [ ! -f /etc/systemd/system/plymouth-quit.service.d/wait-for-graphical.conf ]; then
   # Make plymouth remain until graphical.target
   sudo mkdir -p /etc/systemd/system/plymouth-quit.service.d
@@ -215,4 +216,10 @@ fi
 # Disable getty@tty1.service only if not already disabled
 if ! systemctl is-enabled getty@tty1.service | grep -q disabled; then
   sudo systemctl disable getty@tty1.service
+fi
+
+# Wireguard and systemd-resolvconf setup
+if ! systemctl is-enabled systemd-resolved.service | grep -q disabled; then
+  sudo systemctl enable --now systemd-resolved.service
+  sudo systemctl start --now systemd-resolved.service
 fi

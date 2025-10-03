@@ -55,6 +55,7 @@ rofi-calc
 slurp
 satty
 sof-firmware
+systemd-resolvconf
 spotify
 swappy
 swayosd
