@@ -35,6 +35,7 @@ nautilus
 networkmanager
 noto-fonts-cjk
 noto-fonts-emoji
+omarchy-chromium-bin
 obsidian-bin
 otf-font-awesome
 pavucontrol
