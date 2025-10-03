@@ -95,3 +95,118 @@ EOF
 # Post install
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+
+# Plymouth theme
+
+sudo cp -r ./plymouth/lone /usr/share/plymouth/themes/
+if [ -z sudo plymouth-set-default-theme -l ]; then
+  sudo plymouth-set-default-theme -R lone
+fi
+
+if [ -f "/etc/default/grub" ]; then # Grub
+  echo "Detected grub"
+
+  # Backup GRUB config before modifying
+  backup_timestamp=$(date +"%Y%m%d%H%M%S")
+  sudo cp /etc/default/grub "/etc/default/grub.bak.${backup_timestamp}"
+
+  # Check if splash is already in GRUB_CMDLINE_LINUX_DEFAULT
+  if ! grep -q "GRUB_CMDLINE_LINUX_DEFAULT.*splash" /etc/default/grub; then
+    # Get current GRUB_CMDLINE_LINUX_DEFAULT value
+    current_cmdline=$(grep "^GRUB_CMDLINE_LINUX_DEFAULT=" /etc/default/grub | cut -d'"' -f2)
+
+    # Add splash and quiet if not present
+    new_cmdline="$current_cmdline"
+    if [[ ! "$current_cmdline" =~ splash ]]; then
+      new_cmdline="$new_cmdline splash"
+    fi
+    if [[ ! "$current_cmdline" =~ quiet ]]; then
+      new_cmdline="$new_cmdline quiet"
+    fi
+
+    # Trim any leading/trailing spaces
+    new_cmdline=$(echo "$new_cmdline" | xargs)
+
+    sudo sed -i "s/^GRUB_CMDLINE_LINUX_DEFAULT=\".*\"/GRUB_CMDLINE_LINUX_DEFAULT=\"$new_cmdline\"/" /etc/default/grub
+
+    # Regenerate grub config
+    sudo grub-mkconfig -o /boot/grub/grub.cfg
+  else
+    echo "GRUB already configured with splash kernel parameters"
+  fi
+fi
+
+# Add plymouth to HOOKS array after 'base udev' or 'base systemd'
+if grep "^HOOKS=" /etc/mkinitcpio.conf | grep -q "base systemd"; then
+  sudo sed -i '/^HOOKS=/s/base systemd/base systemd plymouth/' /etc/mkinitcpio.conf
+elif grep "^HOOKS=" /etc/mkinitcpio.conf | grep -q "base udev"; then
+  sudo sed -i '/^HOOKS=/s/base udev/base udev plymouth/' /etc/mkinitcpio.conf
+else
+  echo "Couldn't add the Plymouth hook"
+fi
+
+# Regenerate initramfs
+sudo mkinitcpio -P
+
+# Seamless login after LUKS
+
+if [ ! -f /usr/local/bin/seamless-login ]; then
+  sudo cp ./scripts/seamless-login /usr/local/bin/seamless-login
+else
+  echo "✅ Seamless login binary exist!"
+fi
+
+if [ ! -f /etc/systemd/system/seamless-login.service ]; then
+  cat <<EOF | sudo tee /etc/systemd/system/seamless-login.service
+[Unit]
+Description=Seamless Auto-Login
+Conflicts=getty@tty1.service
+After=systemd-user-sessions.service getty@tty1.service plymouth-quit.service systemd-logind.service
+PartOf=graphical.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/seamless-login uwsm start -- hyprland.desktop
+Restart=always
+RestartSec=2
+StartLimitIntervalSec=30
+StartLimitBurst=2
+User=$USER
+TTYPath=/dev/tty1
+TTYReset=yes
+TTYVHangup=yes
+TTYVTDisallocate=yes
+StandardInput=tty
+StandardOutput=journal
+StandardError=journal+console
+PAMName=login
+
+[Install]
+WantedBy=graphical.target
+EOF
+fi
+
+if [ ! -f /etc/systemd/system/plymouth-quit.service.d/wait-for-graphical.conf ]; then
+  # Make plymouth remain until graphical.target
+  sudo mkdir -p /etc/systemd/system/plymouth-quit.service.d
+  sudo tee /etc/systemd/system/plymouth-quit.service.d/wait-for-graphical.conf <<'EOF'
+[Unit]
+After=multi-user.target
+EOF
+fi
+
+# Mask plymouth-quit-wait.service only if not already masked
+if ! systemctl is-enabled plymouth-quit-wait.service | grep -q masked; then
+  sudo systemctl mask plymouth-quit-wait.service
+  sudo systemctl daemon-reload
+fi
+
+# Enable seamless-login.service only if not already enabled
+if ! systemctl is-enabled seamless-login.service | grep -q enabled; then
+  sudo systemctl enable seamless-login.service
+fi
+
+# Disable getty@tty1.service only if not already disabled
+if ! systemctl is-enabled getty@tty1.service | grep -q disabled; then
+  sudo systemctl disable getty@tty1.service
+fi

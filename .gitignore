@@ -16,4 +16,6 @@
 !/uwsm/
 !/readme
 !/swayosd/
+!/scripts/
+!/plymouth/
 !.gitignore

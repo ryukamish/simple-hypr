@@ -43,6 +43,7 @@ pipewire-alsa
 pipewire-jack
 pipewire-pulse
 polkit-kde-agent
+plymouth
 power-profiles-daemon
 proton-vpn-gtk-app
 python-pywal16
