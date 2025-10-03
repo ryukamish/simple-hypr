@@ -23,6 +23,7 @@ hyprsunset
 hyprpolkitagent
 intel-media-driver
 intel-ucode
+impala
 kitty
 libheif
 libpulse
@@ -68,7 +69,7 @@ waybar
 wget
 wireplumber
 wl-clipboard
-wf-recorder
+wl-screenrec
 wtype
 wlogout
 swww

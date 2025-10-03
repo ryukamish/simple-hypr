@@ -11,7 +11,7 @@ echo "✓ Internet connection available"
 # Check if git is installed
 if ! command -v git &>/dev/null; then
   echo "❌ Git is not installed. Installing git..."
-  sudo pacman -S --needed git
+  sudo pacman -S --needed --noconfirm git
   if [ $? -ne 0 ]; then
     echo "❌ Failed to install git. Exiting."
     exit 1
@@ -79,7 +79,7 @@ done
 if [ ${#to_install[@]} -gt 0 ]; then
   echo ""
   echo "Installing missing packages: ${to_install[*]}"
-  yay -S --needed "${to_install[@]}"
+  yay -S --needed --noconfirm "${to_install[@]}"
 else
   echo ""
   echo "✅ All packages are already installed!"
@@ -88,18 +88,24 @@ fi
 # Adding the bash directory files to ~/.bashrc
 cat <<EOF >>~/.bashrc
 for file in "$HOME"/.config/bash/*; do
-    [[ -f $file ]] && source $file
+    [[ -f "$1" ]] && source "$1"
 done
 EOF
 
 # Post install
+
+# Making directories
+mkdir -p "$HOME"/{Desktop,Downloads,Videos,Documents,Music,Pictures}
+mkdir -p "$HOME"/Pictures/screenshots
+mkdir -p "$HOME"/Videos/screen-recordings
+
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
 
 # Plymouth theme
 
 sudo cp -r ./plymouth/lone /usr/share/plymouth/themes/
-if [ -z sudo plymouth-set-default-theme -l ]; then
+if [ ! -z "sudo plymouth-set-default-theme -l" ]; then
   sudo plymouth-set-default-theme -R lone
 fi
 
