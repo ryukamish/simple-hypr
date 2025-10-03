@@ -63,7 +63,7 @@
     },
     "format": "{icon} {capacity}%",
     "format-full": "{icon} {capacity}%",
-    "format-charging": " {capacity}%",
+    "format-charging": "󰂄 {capacity}%",
     "format-plugged": " {capacity}%",
     "format-alt": "{icon} {time}",
     "format-icons": ["", "", "", "", ""]
@@ -94,14 +94,14 @@
   "pulseaudio": {
     "format": "{icon}",
     "format-bluetooth": " {volume}% {format_source}",
-    "format-bluetooth-muted": "   {format_source}",
-    "format-muted": "  {format_source}",
+    "format-bluetooth-muted": "󰝟  {format_source}",
+    "format-muted": "󰝟 {format_source}",
     "format-source": " {volume}%",
     "format-source-muted": "",
     "format-icons": {
       "headphone": "",
       "hands-free": "",
-      "headset": "",
+      "headset": "",
       "phone": "",
       "portable": "",
       "car": "",
