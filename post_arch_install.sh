@@ -249,3 +249,15 @@ else
 MemorySleepMode=deep
 EOF
 fi
+
+# Defaults applications
+if [[ -z $(which librewolf) 2>/dev/null ]]; then
+  xdg-settings set default-web-browser librewolf.desktop
+else
+  echo "❗ Librewolf is not installed!"
+fi
+if [[ -z $(which evince) 2>/dev/null ]]; then
+  xdg-settings set default-url-scheme-handler org.gnome.Evince.desktop
+else
+  echo "❗ Evince pdf viewer is not installed!"
+fi

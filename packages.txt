@@ -3,6 +3,7 @@ bluez
 blueberry-wayland
 brightnessctl
 dunst
+evince
 fzf
 ffmpeg
 ffmpegthumbnailer
@@ -36,7 +37,6 @@ nautilus
 networkmanager
 noto-fonts-cjk
 noto-fonts-emoji
-omarchy-chromium-bin
 obsidian-bin
 otf-font-awesome
 pavucontrol
