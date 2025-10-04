@@ -170,7 +170,7 @@ fi
 # Seamless login after LUKS
 
 if [ ! -f /usr/local/bin/seamless-login ]; then
-  sudo cp $(pwd)/scripts/seamless-login /usr/local/bin/seamless-login
+  sudo cp $(pwd)/scripts/seamless-login /usr/local/bin/
 else
   echo "✅ Seamless login binary exist!"
 fi
