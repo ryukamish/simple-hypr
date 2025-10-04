@@ -102,13 +102,6 @@ mkdir -p "$HOME"/Videos/screen-recordings
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
 
-# Plymouth theme
-
-sudo cp -r ./plymouth/lone /usr/share/plymouth/themes/
-if [ ! -z "sudo plymouth-set-default-theme -l" ]; then
-  sudo plymouth-set-default-theme -R lone
-fi
-
 if [ -f "/etc/default/grub" ]; then # Grub
   echo "Detected grub"
 
@@ -153,6 +146,16 @@ fi
 
 # Regenerate initramfs
 sudo mkinitcpio -P
+
+# Plymouth theme
+
+if [ -d "/usr/share/plymouth/themes/" ]; then
+  sudo cp -r ./plymouth/lone /usr/share/plymouth/themes/
+fi
+
+if [ "sudo plymouth-set-default-theme -l" | grep -q lone ]; then
+  sudo plymouth-set-default-theme -R lone
+fi
 
 # Seamless login after LUKS
 
