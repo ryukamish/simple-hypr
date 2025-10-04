@@ -88,7 +88,7 @@ fi
 # Adding the bash directory files to ~/.bashrc
 cat <<EOF >>~/.bashrc
 for file in "$HOME"/.config/bash/*; do
-    [[ -f "$1" ]] && source "$1"
+    [[ -f "$file" ]] && source "$file"
 done
 EOF
 
@@ -98,7 +98,12 @@ EOF
 mkdir -p "$HOME"/{Desktop,Downloads,Videos,Documents,Music,Pictures}
 mkdir -p "$HOME"/Pictures/screenshots
 mkdir -p "$HOME"/Videos/screen-recordings
-
+# Cloning wallpapers so that pywal doesn't fail
+if [ -d $HOME/Pictures ]; then
+  mkdir -p $HOME/Pictures/wallpapers && cd $HOME/Pictures/wallpapers
+  git clone https://github.com/ryukamish/wallpapers.git
+fi
+# Global GNOME theme
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
 
@@ -150,6 +155,9 @@ sudo mkinitcpio -P
 # Plymouth theme
 
 if [ -d "/usr/share/plymouth/themes/" ]; then
+  sudo cp -r ./plymouth/lone /usr/share/plymouth/themes/
+else
+  sudo mkdir mkdir -p /usr/share/plymouth/themes
   sudo cp -r ./plymouth/lone /usr/share/plymouth/themes/
 fi
 
