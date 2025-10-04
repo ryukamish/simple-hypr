@@ -102,6 +102,9 @@ mkdir -p "$HOME"/Videos/screen-recordings
 if [ -d $HOME/Pictures ]; then
   mkdir -p $HOME/Pictures/wallpapers && cd $HOME/Pictures/wallpapers
   git clone https://github.com/ryukamish/wallpapers.git
+  WALLPAPER_DIR="$HOME/Pictures/wallpapers"
+  WALLPAPER=$(find "$WALLPAPER_DIR" -type f -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" | shuf -n 1)
+  wal -i "$WALLPAPER" -n
 fi
 # Global GNOME theme
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
