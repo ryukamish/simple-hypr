@@ -87,8 +87,8 @@ fi
 
 # Adding the bash directory files to ~/.bashrc
 cat <<EOF >>~/.bashrc
-for file in "$HOME"/.config/bash/*; do
-    [[ -f "$file" ]] && source "$file"
+for f in ~/.config/bash/*; do
+  . $f
 done
 EOF
 
@@ -155,20 +155,22 @@ sudo mkinitcpio -P
 # Plymouth theme
 
 if [ -d "/usr/share/plymouth/themes/" ]; then
-  sudo cp -r ./plymouth/lone /usr/share/plymouth/themes/
+  sudo cp -r $(pwd)/plymouth/lone /usr/share/plymouth/themes/
 else
-  sudo mkdir mkdir -p /usr/share/plymouth/themes
-  sudo cp -r ./plymouth/lone /usr/share/plymouth/themes/
+  sudo mkdir -p /usr/share/plymouth/themes
+  sudo cp -r $(pwd)/plymouth/lone /usr/share/plymouth/themes/
 fi
 
-if [ "sudo plymouth-set-default-theme -l" ]; then
+if [ -z "sudo plymouth-set-default-theme -l" ]; then
   sudo plymouth-set-default-theme -R lone
+else
+  echo "❗ Plymouth was not able to set theme!"
 fi
 
 # Seamless login after LUKS
 
 if [ ! -f /usr/local/bin/seamless-login ]; then
-  sudo cp ./scripts/seamless-login /usr/local/bin/seamless-login
+  sudo cp $(pwd)/scripts/seamless-login /usr/local/bin/seamless-login
 else
   echo "✅ Seamless login binary exist!"
 fi
