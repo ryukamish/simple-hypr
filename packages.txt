@@ -83,3 +83,4 @@ xf86-input-synaptics
 xf86-video-ati
 xf86-video-nouveau
 yt-dlp
+zen-browser-bin
