@@ -161,7 +161,7 @@ else
   sudo cp -r ./plymouth/lone /usr/share/plymouth/themes/
 fi
 
-if [ "sudo plymouth-set-default-theme -l" | grep -q lone ]; then
+if [ "sudo plymouth-set-default-theme -l" ]; then
   sudo plymouth-set-default-theme -R lone
 fi
 
@@ -233,4 +233,14 @@ fi
 if ! systemctl is-enabled systemd-resolved.service | grep -q disabled; then
   sudo systemctl enable --now systemd-resolved.service
   sudo systemctl start --now systemd-resolved.service
+fi
+
+# Suspend support for laptop
+if [ ! -d /etc/systemd/sleep.conf.d ]; then
+  sudo mkdir /etc/systemd/sleep.conf.d
+else
+  sudo tee /etc/systemd/sleep.conf.d/mem-deep.conf <<'EOF'
+[Sleep]
+MemorySleepMode=deep
+EOF
 fi
